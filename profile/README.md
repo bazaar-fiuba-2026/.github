@@ -3,7 +3,7 @@
 Bazaar es una plataforma de eCommerce desarrollada como trabajo práctico para la materia Ingeniería de Software II curso Rojas. La arquitectura está basada en microservicios independientes, cada uno con su propia base de datos y responsabilidad bien definida, comunicados a través de un API Gateway.
 
 
-![](../profile/images/arquitecture.jpeg)
+![](../profile/images/Arquitecura_General.png)
 
 ---
 
