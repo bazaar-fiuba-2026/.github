@@ -18,6 +18,7 @@ Bazaar es una plataforma de eCommerce desarrollada como trabajo práctico para l
   - [Historias de Usuario](#historias-de-usuario)
   - [Seguimiento interno](#seguimiento-interno)
   - [Presentaciones](#presentaciones)
+- [Demos](#demos)
 
 
 
@@ -118,3 +119,8 @@ Las presentaciones utilizadas durante las exposiciones de los distintos checkpoi
 
 - Checkpoint 1 y Checkpoint 2: [Presentación](https://canva.link/pfvpwla4u2y3v44)
 
+
+# Demos
+
+Para las demos realizadas en cada uno de los checkpoints que se llevaron a cabo a lo largo del cuatrimestre, se utilizó el site https://cron-job.org/ para schedulear un cron job cada n minutos y que todos 
+los servicios de este trabajo se mantengan "vivos" en el sitio en donde se encuentran deployados (en particular nosotros elegimos render, el cual permanece activo mientras reciba requests en un rango de 15 minutos).
