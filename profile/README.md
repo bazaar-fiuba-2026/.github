@@ -1,17 +1,41 @@
+
 # Bazaar — Trabajo Práctico KanguShop
 
-Bazaar es una plataforma de eCommerce desarrollada como trabajo práctico para la materia Ingeniería de Software II curso Rojas. La arquitectura está basada en microservicios independientes, cada uno con su propia base de datos y responsabilidad bien definida, comunicados a través de un API Gateway.
+Bazaar es una plataforma de eCommerce desarrollada como trabajo práctico para la materia **Ingeniería de Software II** (Curso Rojas, FIUBA).
 
+
+
+
+# Tabla de contenidos
+
+- [Arquitectura](#arquitectura)
+- [Repositorios](#repositorios)
+  - [Backend](#backend)
+  - [Frontend](#frontend)
+- [Documentación del proyecto](#documentación-del-proyecto)
+  - [Bitácora del proyecto](#bitácora-del-proyecto)
+  - [Backlog inicial](#backlog-inicial)
+  - [Historias de Usuario](#historias-de-usuario)
+  - [Seguimiento interno](#seguimiento-interno)
+  - [Presentaciones](#presentaciones)
+
+
+
+# Arquitectura
+
+La solución está construida siguiendo una arquitectura de **microservicios**, donde cada servicio posee su propia base de datos y responsabilidad bien definida. Todos los componentes se comunican mediante un **API Gateway**.
 
 ![](../profile/images/Arquitecura_General.png)
 
----
 
-## Repositorios
+
+# Repositorios
+
+### Backend
 
 ### [service-catalog](https://github.com/bazaar-fiuba-2026/service-catalog)
 
-Microservicio REST encargado del ciclo de vida de productos: creación, consulta, actualización y eliminación. Gestiona categorías, stock e imágenes de productos, e incluye un endpoint de recomendaciones por categoría y un historial de auditoría de cambios. Construido con **FastAPI** y **PostgreSQL**.
+Microservicio REST encargado del ciclo de vida de productos: creación, consulta, actualización y eliminación. Gestiona categorías, stock e imágenes de productos, e incluye un endpoint de recomendaciones por categoría y un historial de auditoría de cambios. Construido con FastAPI y PostgreSQL.
 
 ### [service-orders](https://github.com/bazaar-fiuba-2026/service-orders)
 
@@ -19,36 +43,78 @@ Service Orders es un microservicio backend para una plataforma de eCommerce. Se 
 
 ### [service-users](https://github.com/bazaar-fiuba-2026/service-users)
 
-Microservicio para la gestión de perfiles de usuario en Bazaar. La autenticación es gestionada por Supabase Auth. Este servicio se enfoca únicamente en: perfiles de usuario, dispositivos y PIN, administración y moderación. Los perfiles se crean automáticamente mediante un trigger en la base de datos cuando Supabase crea un nuevo usuario.
+Gestiona perfiles de usuario, dispositivos y PIN. La autenticación es delegada a Supabase Auth y los perfiles son creados automáticamente mediante triggers.
 
 ### [service-wishlist](https://github.com/bazaar-fiuba-2026/service-wishlist)
 
-Microservicio REST que permite a los usuarios guardar y gestionar sus listas de deseos. Almacena únicamente IDs de productos (delegando los datos al service-catalog) y valida la identidad del usuario mediante el header `X-User-Id` inyectado por el API Gateway. Construido con **FastAPI** y **MongoDB**.
+Permite administrar listas de deseos de los usuarios almacenando únicamente referencias a productos.
 
 ### [service-gateway](https://github.com/bazaar-fiuba-2026/api-gateway)
 
-API Gateway es el punto de entrada único de la plataforma Bazaar. Se encarga de autenticar usuarios contra Supabase (email/password, OAuth de Google, login por PIN y refresh de sesión), verificar el JWT en cada request y resolver el rol y estado de aplicación consultando a service-users, rutear el tráfico hacia los microservicios internos (users, catalog, orders, wishlist, notifications), removiendo el prefijo y propagando headers de identidad y tracing y exponer rutas públicas para navegación anónima (catálogo, perfiles públicos, productos populares) y un health-check agregado del sistema.
+Punto único de entrada al sistema. Centraliza autenticación, autorización, routing, propagación de identidad y health checks.
 
 ### [service-notifications](https://github.com/bazaar-fiuba-2026/service-notifications)
 
-Microservicio de notificaciones push de Bazaar. Se ocupa de avisarle cosas a los usuarios: por ejemplo, cuando cambia el estado de una compra, o cuando a un vendedor se le está por acabar el stock de un producto. Guarda los tokens de FCM de cada usuario (una persona puede tener varios dispositivos), manda las notificaciones push usando Firebase Cloud Messaging, deja registrada cada notificación en la base,
-y evita mandar el mismo aviso de stock dos veces para el mismo producto.
+Gestiona las notificaciones push mediante Firebase Cloud Messaging y mantiene el historial de envíos y tokens de dispositivos.
 
-### [app-backoffice](https://github.com/bazaar-fiuba-2026/app-backoffice)
+---
 
-Panel de administración del marketplace KanguShop. Soporta el estándar RFC 7807 para los errores HTTP que recibe del API gateway.
-
-Cuando entrás como administrador, el sidebar de la izquierda te lleva a 4 vistas principales: usuarios, productos, orders y metricas.
+### Frontend
 
 ### [app-mobile](https://github.com/bazaar-fiuba-2026/app-mobile)
 
 Aplicación móvil de Bazaar, el marketplace donde cualquier persona puede comprar y vender productos de forma simple y segura. Entre las pantallas disponibles tenemos autenticacion, navegacion principal, perfil y configuracion, compras y ventas y publicaciones, entre otras.
 
+### [app-backoffice](https://github.com/bazaar-fiuba-2026/app-backoffice)
+
+Panel administrativo utilizado para gestionar usuarios, productos, órdenes y métricas del sistema.
+
 ### [auth-web](https://github.com/bazaar-fiuba-2026/auth-web)
 
-Sitio web estático que actua como intermediario en la autenticacion para la app mobile. Entre sus principales responsabilidades se encuentran oauth callback, reset de contraseña, product deep links, el resultado de pagos y un health check. Es la landing page de auth que hace de puente entre los flujos web y la app  mobile nativa.
+Aplicación web utilizada como intermediaria para los flujos de autenticación, recuperación de contraseña, OAuth y Deep Links.
+
+
+# Documentación del proyecto
+
+Durante el desarrollo del proyecto se mantuvo documentación actualizada para registrar el proceso de trabajo, realizar el seguimiento de las tareas y documentar las decisiones tomadas en cada etapa.
+
+## Bitácora del proyecto
+
+Se realizó un seguimiento semanal del avance del proyecto, documentando los objetivos alcanzados, funcionalidades implementadas y planificación de cada checkpoint.
+
+> La bitácora puede consultarse en los documentos de seguimiento correspondientes a cada entrega.
 
 
 
+## Backlog inicial
 
+El backlog inicial permitió organizar y priorizar las funcionalidades del producto antes del comienzo del desarrollo.
+
+ [GitHub Project](https://github.com/orgs/bazaar-fiuba-2026/projects/1)
+
+
+
+## Historias de Usuario
+
+Las historias de usuario fueron refinándose a medida que avanzó el proyecto.
+
+- Checkpoint 2:   [Documento CH2](https://docs.google.com/document/d/1VkiupEak8zu1-pSQkEfZrfi9cjOBwl-6CMn6kS3rHKk/edit?usp=drive_link)
+
+- Checkpoint 3: [Documento CH3](https://docs.google.com/document/d/1fPZauXmuLLpjU9D-C0DlZAoe4hfx2W5-ip7Hg6jJXQg/edit?usp=drive_link)
+
+
+
+## Seguimiento interno
+
+Como complemento del backlog, el equipo llevó un documento interno donde se controló los avances, tareas pendientes y decisiones de desarrollo.
+
+ [Documento](https://docs.google.com/document/d/1Mx2_lwr_fSbq0ZpVSsV3Wb0rONhPUSgbuV-e1nEcgFI/edit?usp=drive_link)
+
+
+
+## Presentaciones
+
+Las presentaciones utilizadas durante las exposiciones de los distintos checkpoints se encuentran disponibles en Canva.
+
+- Checkpoint 1 y Checkpoint 2: [Presentación](https://canva.link/pfvpwla4u2y3v44)
 
